@@ -5,11 +5,10 @@ export default function Project(props) {
     return(
     
     <View style={styles.container}>
-        <TouchableOpacity style={styles.titleWrapper}>
+        <TouchableOpacity style={styles.titleWrapper} onPress={props.handleProjectPress}>
             <Text style={styles.title} index={props.index}>{props.title}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.deleteBtn } onPress={props.handleDelete}><Image style={styles.deleteImg}source={require("../assets/delete.png")}/></TouchableOpacity>
-
     </View>
     )
 }
