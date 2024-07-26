@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useState, useEffect } from 'react';
-import useNavigation from '@react-navigation/native'
+import {useFocusEffect} from '@react-navigation/native'
 import  AsyncStorage  from '@react-native-async-storage/async-storage'
 import ProjectView from './ProjectView';
 import ProjectDetails from './ProjectDetails';
+import React from 'react';
 
 
 export default function Home({navigation}){
@@ -32,20 +33,23 @@ export default function Home({navigation}){
     }
   }
 
-  useEffect(() => {
-    const loadProjects = async () => {
-      try {
-        const savedProjects = await AsyncStorage.getItem('projects');
-        if (savedProjects !== null) {
-          setProjects(JSON.parse(savedProjects));
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadProjects = async () => {
+        try {
+          const savedProjects = await AsyncStorage.getItem('projects');
+          if (savedProjects !== null) {
+            setProjects(JSON.parse(savedProjects));
+          }
+        } catch (error) {
+          console.error('Error loading projects:', error);
         }
-      } catch (error) {
-        console.error('Error loading tasks:', error);
-      }
-    };
+      };
   
-    loadProjects();
-  }, []);
+      loadProjects();
+    }, [])
+  );
+  
 
   const showProjectForm = () => {
     setShowForm(true)
