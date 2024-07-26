@@ -1,15 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import {useFocusEffect} from '@react-navigation/native'
 import  AsyncStorage  from '@react-native-async-storage/async-storage'
 import ProjectView from './ProjectView';
-import ProjectDetails from './ProjectDetails';
-import React from 'react';
 
 
 export default function Home({navigation}){
-
+  
   const createProject = (title, description,  features=[], notes="") => {
     return({
         title,
@@ -20,11 +18,12 @@ export default function Home({navigation}){
 }
 
   const [showForm, setShowForm] = useState(false)
-  
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState("")
   const [projects, setProjects] = useState([])
 
+
+  // Save the projects to asyncstorage
   const saveProjects = async (projects) => {
     try {
       await AsyncStorage.setItem('projects', JSON.stringify(projects))
@@ -33,8 +32,9 @@ export default function Home({navigation}){
     }
   }
 
+  // Load the projects from asyncstorage also refreshing when returning from Project Details Screen
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const loadProjects = async () => {
         try {
           const savedProjects = await AsyncStorage.getItem('projects');
@@ -54,7 +54,7 @@ export default function Home({navigation}){
   const showProjectForm = () => {
     setShowForm(true)
   }
-
+  
   const handleCancel = () => {
     Keyboard.dismiss()
     setShowForm(false)
