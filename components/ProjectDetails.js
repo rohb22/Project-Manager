@@ -25,132 +25,133 @@ export default function ProjectDetails({route}) {
       console.error(error)
     }
   }
-    useEffect(() => {
-        const loadProjects = async () => {
-          try {
-            const savedProjects = await AsyncStorage.getItem('projects');
-            if (savedProjects !== null) {
-              const projectList = JSON.parse(savedProjects);
-              let selectedProject = projectList[projectIndex]
-              setProjects(projectList)
-              setProject(selectedProject)
-              if(selectedProject) {
-                setTitle(selectedProject.title)
-                setDescription(selectedProject.description || '')
-              }
+
+  useEffect(() => {
+      const loadProjects = async () => {
+        try {
+          const savedProjects = await AsyncStorage.getItem('projects');
+          if (savedProjects !== null) {
+            const projectList = JSON.parse(savedProjects);
+            let selectedProject = projectList[projectIndex]
+            setProjects(projectList)
+            setProject(selectedProject)
+            if(selectedProject) {
+              setTitle(selectedProject.title)
+              setDescription(selectedProject.description || '')
             }
-            } catch (error) {
-            console.error('Error loading tasks:', error);
           }
-        };
-      
-        loadProjects();
-      }, []);
-
-
-    const handleShowAddFeature = () => {
-        setShowAddFeature(!showAddFeature)
-        if(setShowAddFeature) setFeature('')
-        Keyboard.dismiss()
-    }
-
-    const handleFeatureChange = (text) => {
-        setFeature(text)
-    }
-
-    const handleCancelFeature = () =>{
-        setShowAddFeature(false)
-        setFeature('')
-        Keyboard.dismiss()
-    }
-
-    const handleSaveFeature = () => {
-        Keyboard.dismiss()
-        if (feature == '') return
-        const updatedProject = {
-            ...project,
-            features: [...(project.features), feature]
-          };
-          const updatedProjects = [...projects];
-          updatedProjects[projectIndex] = updatedProject;
-    
-          setProjects(updatedProjects);
-          setProject(updatedProject);
-          saveProjects(updatedProjects);
-          handleCancelFeature();
+          } catch (error) {
+          console.error('Error loading tasks:', error);
+        }
       };
-
-    const handleDeleteFeature = (featureToDelete) => {
-        const newFeatureList = project.features.filter(f => f != featureToDelete)
-        const updatedProject = {...project, features: newFeatureList}
-        const updatedProjects = [...projects]
-        updatedProjects[projectIndex] = updatedProject
-
-        setProject(updatedProject)
-        setProjects(updatedProjects)
-        saveProjects(updatedProjects)
-    }
-
-    const handleEditNotes = () => {
-        Keyboard.dismiss()
-        if(showEditNotes){
-            const newNotes = notes
-            const updatedProject = {...project, notes: newNotes}
-            const updatedProjects = [...projects]
-            updatedProjects[projectIndex] = updatedProject
-
-            setProject(updatedProject)
-            setProjects(updatedProjects)
-            saveProjects(updatedProjects)
-        }
-        setShowEditNotes(!showEditNotes)
-    }
-
-    const handleNotesChange = (text) => {
-        setNotes(text)
-    }
-
-    const handleShowEditProject = () => {
-        setShowEditProject(true)
-    }
-
-    const handleEditTitleChange = (text) => {
-        setTitle(text)
-    }
     
-    const handleEditDescriptionChange = (text) => {
-        setDescription(text)
-    }
-    const handleSave = () => {
-        setShowEditProject(false)
-        Keyboard.dismiss()
-        if (title == "") {
-            setTitle(project.title)
-            return
-        }
-        const updatedProject = {...project, description: description, title: title}
-        const updatedProjects = [...projects]
-        updatedProjects[projectIndex] = updatedProject
-        setProject(updatedProject)
-        setProjects(updatedProjects)
-        saveProjects(updatedProjects)
-        
-    }
+      loadProjects();
+    }, []);
 
-    const handleCancel = () => {
-        setShowEditProject(false)
-        Keyboard.dismiss()
-        setTitle(project.title)
-        setDescription(project.description)
-    }
 
-    if (project == null) {
-        return(
-            <View style={styles.container}>
-                <ActivityIndicator style={styles.loading} size="large"/>
-            </View>
-        )
+  const handleShowAddFeature = () => {
+      setShowAddFeature(!showAddFeature)
+      if(setShowAddFeature) setFeature('')
+      Keyboard.dismiss()
+  }
+
+  const handleFeatureChange = (text) => {
+      setFeature(text)
+  }
+
+  const handleCancelFeature = () =>{
+      setShowAddFeature(false)
+      setFeature('')
+      Keyboard.dismiss()
+  }
+
+  const handleSaveFeature = () => {
+      Keyboard.dismiss()
+      if (feature == '') return
+      const updatedProject = {
+          ...project,
+          features: [...(project.features), feature]
+        };
+        const updatedProjects = [...projects];
+        updatedProjects[projectIndex] = updatedProject;
+  
+        setProjects(updatedProjects);
+        setProject(updatedProject);
+        saveProjects(updatedProjects);
+        handleCancelFeature();
+    };
+
+  const handleDeleteFeature = (featureToDelete) => {
+      const newFeatureList = project.features.filter(f => f != featureToDelete)
+      const updatedProject = {...project, features: newFeatureList}
+      const updatedProjects = [...projects]
+      updatedProjects[projectIndex] = updatedProject
+
+      setProject(updatedProject)
+      setProjects(updatedProjects)
+      saveProjects(updatedProjects)
+  }
+
+  const handleEditNotes = () => {
+      Keyboard.dismiss()
+      if(showEditNotes){
+          const newNotes = notes
+          const updatedProject = {...project, notes: newNotes}
+          const updatedProjects = [...projects]
+          updatedProjects[projectIndex] = updatedProject
+
+          setProject(updatedProject)
+          setProjects(updatedProjects)
+          saveProjects(updatedProjects)
       }
+      setShowEditNotes(!showEditNotes)
+  }
+
+  const handleNotesChange = (text) => {
+      setNotes(text)
+  }
+
+  const handleShowEditProject = () => {
+      setShowEditProject(true)
+  }
+
+  const handleEditTitleChange = (text) => {
+      setTitle(text)
+  }
+  
+  const handleEditDescriptionChange = (text) => {
+      setDescription(text)
+  }
+  const handleSave = () => {
+      setShowEditProject(false)
+      Keyboard.dismiss()
+      if (title == "") {
+          setTitle(project.title)
+          return
+      }
+      const updatedProject = {...project, description: description, title: title}
+      const updatedProjects = [...projects]
+      updatedProjects[projectIndex] = updatedProject
+      setProject(updatedProject)
+      setProjects(updatedProjects)
+      saveProjects(updatedProjects)
+      
+  }
+
+  const handleCancel = () => {
+      setShowEditProject(false)
+      Keyboard.dismiss()
+      setTitle(project.title)
+      setDescription(project.description)
+  }
+
+  if (project == null) {
+      return(
+          <View style={styles.container}>
+              <ActivityIndicator style={styles.loading} size="large"/>
+          </View>
+      )
+    }
 
   return (
     <View style={styles.container}>
