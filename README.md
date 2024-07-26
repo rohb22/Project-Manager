@@ -1,6 +1,7 @@
 # Project Manager
 
 After learning the basics of React Native w/ Expo, I want to build something useful for myself
+[Test on Snack Expo](https://snack.expo.dev/@rohb/991e4f)
 
 ### Project Manager
 
