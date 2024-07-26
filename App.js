@@ -9,12 +9,9 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          options={{headerShown:false}}
-          name="Home"
-          component={Home}
-        />
-        <Stack.Screen name="Project Details" component={ProjectDetails} />
+        <Stack.Screen options={{headerShown:false}} name="Home" component={Home}/>
+        {/* For individual project details */}
+        <Stack.Screen name="Project Details" component={ProjectDetails}  />
       </Stack.Navigator>
     </NavigationContainer>
   );
